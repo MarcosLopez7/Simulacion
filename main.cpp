@@ -2,9 +2,11 @@
 #include <fstream>
 #include <cstdlib>
 #include <string>
+#include <ctime>
 
 #define N 20000
 #define M 5
+#define LISTA 13074
 
 using namespace std;
 
@@ -16,15 +18,19 @@ typedef struct {
 
 void simular1(float **);
 void simular2(float **);
+void relletaNumeros(float **, float **);
 
 int main() {
 
     ifstream archivo("Tabla1.txt");
 
     float **tabla = (float **) malloc(N * sizeof(float *));
+    float **numeros = (float **) malloc(500 * sizeof(float *));
 
     for (int i = 0; i < N; ++i) {
         tabla[i] = (float *) malloc(M * sizeof(float));
+        if (500 > i)
+            numeros[i] = (float *) malloc(M * sizeof(float));
     }
 
     int i = 0;
@@ -51,12 +57,30 @@ int main() {
         }
 
         archivo.close();
-        simular1(tabla);
-        simular2(tabla);
+        relletaNumeros(numeros, tabla);
+        simular1(numeros);
+        simular2(numeros);
     }
     archivo.close();
     free(tabla);
+    free(numeros);
     return 0;
+}
+
+void relletaNumeros(float **nums, float **t) {
+
+    srand((int) time(NULL));
+    float **n = nums;
+
+    int numero_aleatoreo;
+
+    for (int i = 0; i < 500; ++i) {
+        numero_aleatoreo = rand() % LISTA;
+        for (int j = 0; j < M; ++j) {
+            n[i][j] = t[numero_aleatoreo][j];
+        }
+    }
+
 }
 
 void simular1(float **tabla) {
